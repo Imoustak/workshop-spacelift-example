@@ -7,6 +7,20 @@ data "aws_ssoadmin_instances" "this" {
 locals {
   argocd_idc_instance_arn = var.argocd_idc_instance_arn != "" ? var.argocd_idc_instance_arn : one(data.aws_ssoadmin_instances.this[0].arns)
 
+  # One access entry per admin principal, keyed by the last segment of the ARN
+  # (e.g. "user/emin" -> "emin") so the map keys stay stable and readable.
+  cluster_admin_access_entries = {
+    for arn in var.cluster_admin_principal_arns : reverse(split("/", arn))[0] => {
+      principal_arn = arn
+      policy_associations = {
+        admin = {
+          policy_arn   = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+          access_scope = { type = "cluster" }
+        }
+      }
+    }
+  }
+
   argocd_rbac_role_mapping = length(var.argocd_admin_sso_group_ids) > 0 ? [{
     role = "ADMIN"
     identity = [for group_id in var.argocd_admin_sso_group_ids : {
@@ -25,6 +39,9 @@ module "eks" {
 
   endpoint_public_access                   = var.endpoint_public_access
   enable_cluster_creator_admin_permissions = true
+
+  # Auth is access-entry based (API mode); aws-auth ConfigMap is not used.
+  access_entries = local.cluster_admin_access_entries
 
   # EKS Auto Mode. Enabling compute_config also turns on the managed block
   # storage (EBS CSI) and load balancing (ALB/NLB) capabilities of Auto Mode,

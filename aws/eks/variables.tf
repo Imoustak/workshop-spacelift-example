@@ -28,6 +28,12 @@ variable "endpoint_public_access" {
   default     = true
 }
 
+variable "cluster_admin_principal_arns" {
+  type        = list(string)
+  description = "IAM principal ARNs granted cluster-wide admin through an EKS access entry. The stack is applied by the Spacelift AWS integration role, so enable_cluster_creator_admin_permissions only covers that role — human users need to be listed here to reach the cluster with kubectl."
+  default     = ["arn:aws:iam::247747705325:user/emin"]
+}
+
 ################################################################################
 # Networking references
 #
