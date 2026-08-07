@@ -64,6 +64,16 @@ output "argocd_server_url" {
   value       = module.argocd.argocd_server_url
 }
 
+output "argocd_admin_group_id" {
+  description = "ID of the IAM Identity Center group mapped to the Argo CD ADMIN role."
+  value       = aws_identitystore_group.argocd_admins.group_id
+}
+
+output "argocd_admin_member_ids" {
+  description = "IAM Identity Center user IDs that are members of the Argo CD admin group, keyed by user name."
+  value       = { for name, user in data.aws_identitystore_user.argocd_admins : name => user.user_id }
+}
+
 output "configure_kubectl" {
   description = "Command to write a kubeconfig entry for the cluster."
   value       = "aws eks update-kubeconfig --region ${var.region} --name ${module.eks.cluster_name}"

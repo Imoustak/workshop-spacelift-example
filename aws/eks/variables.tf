@@ -84,9 +84,27 @@ variable "argocd_idc_instance_arn" {
   default     = ""
 }
 
+variable "argocd_idc_identity_store_id" {
+  type        = string
+  description = "ID of the IAM Identity Center identity store the Argo CD admin group is created in. Discovered from the IDC instance when empty. Set via TF_VAR_argocd_idc_identity_store_id."
+  default     = ""
+}
+
+variable "argocd_admin_group_name" {
+  type        = string
+  description = "Display name of the IAM Identity Center group created for Argo CD administrators."
+  default     = "argocd-admins"
+}
+
+variable "argocd_admin_user_names" {
+  type        = list(string)
+  description = "IAM Identity Center user names added to the Argo CD admin group. These must already exist in the identity store — the workshop does not provision users. Add a workshop attendee here to give them the Argo CD ADMIN role."
+  default     = ["eminalemdar"]
+}
+
 variable "argocd_admin_sso_group_ids" {
   type        = list(string)
-  description = "IAM Identity Center group IDs granted the Argo CD ADMIN role. No RBAC mapping is created when empty."
+  description = "Pre-existing IAM Identity Center group IDs granted the Argo CD ADMIN role, in addition to the group created by this stack. Optional."
   default     = []
 }
 
