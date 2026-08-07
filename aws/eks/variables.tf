@@ -72,6 +72,12 @@ variable "ack_iam_role_policies" {
   }
 }
 
+variable "kro_access_policy_arn" {
+  type        = string
+  description = "EKS access policy associated with the kro capability role so it can manage the resources its ResourceGraphDefinitions create. AmazonEKSClusterAdminPolicy is what AWS recommends for getting started and covers any RGD — swap it for a narrower policy, or replace this association with custom RBAC, for anything beyond a workshop."
+  default     = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+}
+
 variable "argocd_namespace" {
   type        = string
   description = "Namespace the managed Argo CD capability is installed into."

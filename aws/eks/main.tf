@@ -123,6 +123,8 @@ module "ack" {
 }
 
 # Kube Resource Orchestrator: compose resources into higher-level custom APIs.
+# kro needs no IAM policies of its own — it never calls AWS APIs, it only
+# creates Kubernetes objects.
 module "kro" {
   source  = "terraform-aws-modules/eks/aws//modules/capability"
   version = "~> 21.24"
@@ -131,6 +133,27 @@ module "kro" {
   cluster_name = module.eks.cluster_name
 
   tags = var.tags
+}
+
+# Creating the capability gets kro an access entry carrying AmazonEKSKROPolicy,
+# which only covers ResourceGraphDefinitions and their instances — deliberately
+# not the resources an RGD actually produces. Without a broader policy an RGD
+# registers its custom API but instantiating one creates nothing, so kro needs
+# rights over every kind its RGDs emit (Deployments, Services, and the ACK
+# *.services.k8s.aws CRDs when composing AWS resources).
+#
+# Cluster admin is what AWS prescribes for getting started and keeps any RGD the
+# workshop writes working. Scope this down for anything real: combined with the
+# ACK capability's AdministratorAccess, whoever can create a kro instance can
+# create arbitrary AWS resources.
+resource "aws_eks_access_policy_association" "kro" {
+  cluster_name  = module.eks.cluster_name
+  principal_arn = module.kro.iam_role_arn
+  policy_arn    = var.kro_access_policy_arn
+
+  access_scope {
+    type = "cluster"
+  }
 }
 
 # Fully managed Argo CD for GitOps delivery into the cluster.
