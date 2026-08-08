@@ -26,6 +26,8 @@ variable "vcs" {
   })
   description = "VCS integration the stacks source their code from."
 
+  # CHANGE ME: your VCS namespace and the ID of your own Spacelift VCS integration.
+  # Note that enterprise = false targets github.com instead of GitHub Enterprise.
   default = {
     type       = "GITHUB"
     enterprise = true
@@ -37,5 +39,8 @@ variable "vcs" {
 variable "aws_integration_id" {
   type        = string
   description = "The ID of the Spacelift AWS integration the stacks assume for cloud credentials."
-  default     = "01HCY7118NC0NWCZ0QTJKK8WB7"
+
+  # CHANGE ME: specific to the Spacelift account this was built in. Find yours
+  # under Cloud integrations in the Spacelift UI.
+  default = "01HCY7118NC0NWCZ0QTJKK8WB7"
 }

@@ -31,7 +31,10 @@ variable "endpoint_public_access" {
 variable "cluster_admin_principal_arns" {
   type        = list(string)
   description = "IAM principal ARNs granted cluster-wide admin through an EKS access entry. The stack is applied by the Spacelift AWS integration role, so enable_cluster_creator_admin_permissions only covers that role — human users need to be listed here to reach the cluster with kubectl."
-  default     = ["arn:aws:iam::247747705325:user/emin"]
+
+  # CHANGE ME: points at the AWS account this workshop was built in. Replace with
+  # your own principals or you will not be able to reach the cluster.
+  default = ["arn:aws:iam::247747705325:user/emin"]
 }
 
 ################################################################################
@@ -105,7 +108,10 @@ variable "argocd_admin_group_name" {
 variable "argocd_admin_user_names" {
   type        = list(string)
   description = "IAM Identity Center user names added to the Argo CD admin group. These must already exist in the identity store — the workshop does not provision users. Add a workshop attendee here to give them the Argo CD ADMIN role."
-  default     = ["eminalemdar"]
+
+  # CHANGE ME: an Identity Center user from the account this was built in. With no
+  # valid member here nobody can get into the Argo CD UI.
+  default = ["eminalemdar"]
 }
 
 variable "argocd_admin_sso_group_ids" {
