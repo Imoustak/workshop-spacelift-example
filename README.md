@@ -1,6 +1,6 @@
 # workshop
 
-Infrastructure behind the EKS workshop — a VPC, an EKS Auto Mode cluster, and the
+Infrastructure behind the EKS workshop - a VPC, an EKS Auto Mode cluster, and the
 ACK, kro and Argo CD capabilities running on top of it.
 
 Everything is OpenTofu and Spacelift applies it, so most of the time you won't be
@@ -40,14 +40,14 @@ grep -rn "CHANGE ME" .
 
 Edit the defaults directly, or leave them alone and override per stack in Spacelift
 with `TF_VAR_<name>`. If you go the environment variable route, the list and object
-values need to parse as HCL — brackets and braces included:
+values need to parse as HCL - brackets and braces included:
 
 ```bash
 TF_VAR_cluster_admin_principal_arns='["arn:aws:iam::<account-id>:user/<you>"]'
 TF_VAR_vcs='{type="GITHUB",enterprise=true,namespace="<your-org>",id="<vcs-integration-id>"}'
 ```
 
-Everything else — region, cluster name, CIDR, Kubernetes version — has a sensible
+Everything else - region, cluster name, CIDR, Kubernetes version - has a sensible
 default in the `variables.tf` next to each stack.
 
 ## How changes get applied
@@ -63,7 +63,7 @@ There are two stacks in the `workshop` space:
 of its outputs, so that's one piece of wiring you can forget about.
 
 Both track `main` with auto-deploy on. Push and the affected stack plans and
-applies on its own — there's no confirmation step waiting for you. If you'd rather
+applies on its own - there's no confirmation step waiting for you. If you'd rather
 see the plan first, open a pull request instead; that gives you a proposed run and
 leaves the tracked stack alone.
 
@@ -73,7 +73,7 @@ new stack works the same way as everything else.
 ## Getting access to the cluster
 
 Your IAM principal needs an access entry before `kubectl` will work. Add it to
-`cluster_admin_principal_arns` in `aws/eks/variables.tf` and push — the cluster is
+`cluster_admin_principal_arns` in `aws/eks/variables.tf` and push - the cluster is
 API-auth only, so there's no `aws-auth` ConfigMap to go hunting for.
 
 Once that lands:
@@ -113,7 +113,7 @@ itself out, so leave that alone.
 
 ## ACK
 
-The controllers run on AWS-managed infrastructure — there's nothing to install and
+The controllers run on AWS-managed infrastructure - there's nothing to install and
 you won't see any pods for it in the cluster. The CRDs are already registered, so
 you can go straight to creating AWS resources through Kubernetes:
 
@@ -199,7 +199,7 @@ Now the underlying `Bucket` appears, and the S3 bucket behind it. Delete the
 
 The example above is deliberately tiny. The reason kro is interesting is that a
 graph can hold several resources at once, and it works out the ordering and passes
-values between them for you — a bucket plus a queue plus the notification wiring,
+values between them for you - a bucket plus a queue plus the notification wiring,
 all from one small custom resource.
 
 If an instance gets accepted but nothing shows up underneath it, that's usually kro
