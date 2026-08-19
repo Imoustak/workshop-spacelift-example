@@ -1,7 +1,7 @@
 variable "region" {
   type        = string
   description = "AWS region the EKS cluster is created in."
-  default     = "eu-west-1"
+  default     = "us-east-1"
 }
 
 variable "cluster_name" {
