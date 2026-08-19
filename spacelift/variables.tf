@@ -1,7 +1,7 @@
 variable "repository_name" {
   type        = string
   description = "The name of the Git repository holding the infrastructure code."
-  default     = "workshop"
+  default     = "workshop-spacelift-example"
 }
 
 variable "repository_branch" {
@@ -31,7 +31,7 @@ variable "vcs" {
   default = {
     type       = "GITHUB"
     enterprise = true
-    namespace  = "eminalemdar"
+    namespace  = "Imoustak"
     id         = "github-enterprise-default-integration"
   }
 }
@@ -42,5 +42,5 @@ variable "aws_integration_id" {
 
   # CHANGE ME: specific to the Spacelift account this was built in. Find yours
   # under Cloud integrations in the Spacelift UI.
-  default = "01HCY7118NC0NWCZ0QTJKK8WB7"
+  default = "01M0CTQGC9J7GZ8FF5AR0570ZB"
 }
