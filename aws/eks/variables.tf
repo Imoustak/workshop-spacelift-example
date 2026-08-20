@@ -35,7 +35,7 @@ variable "cluster_admin_principal_arns" {
   # CHANGE ME: points at the AWS account this workshop was built in. Replace with
   # your own principals or you will not be able to reach the cluster.
   default = ["arn:aws:iam::283215949518:role/spacelift-access-role"]
-spacelift-access-role"]
+
 }
 
 ################################################################################
